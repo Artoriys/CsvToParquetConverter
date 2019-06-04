@@ -1,6 +1,7 @@
 package csv_utils;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.log4j.Logger;
 import org.apache.parquet.column.ColumnDescriptor;
 import org.apache.parquet.hadoop.api.WriteSupport;
 import org.apache.parquet.io.ParquetEncodingException;
@@ -12,8 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CsvWriteSupport extends WriteSupport<List<String>> {
+    private final static Logger logger = Logger.getLogger(CsvWriteSupport.class);
     private final MessageType messageType;
-    List<ColumnDescriptor> cols;
+    private List<ColumnDescriptor> cols;
     private RecordConsumer recordConsumer;
 
     public CsvWriteSupport(MessageType messageType) {
@@ -23,11 +25,13 @@ public class CsvWriteSupport extends WriteSupport<List<String>> {
 
     @Override
     public WriteSupport.WriteContext init(Configuration configuration) {
+        logger.info("Init write support");
         return new WriteSupport.WriteContext(messageType, new HashMap<>());
     }
 
     @Override
     public void prepareForWrite(RecordConsumer recordConsumer) {
+        logger.info("Prepare for write");
         this.recordConsumer = recordConsumer;
     }
 

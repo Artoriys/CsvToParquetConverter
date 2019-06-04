@@ -1,5 +1,6 @@
 import csv_utils.CsvParquetWriter;
 import org.apache.hadoop.fs.Path;
+import org.apache.log4j.Logger;
 import org.apache.parquet.schema.MessageType;
 import utils.SchemaParser;
 
@@ -10,13 +11,25 @@ import java.io.IOException;
 import java.util.Arrays;
 
 class Converter {
-    void write(File schemaFile, File csvFile, File outFile) throws IOException {
+    private final static Logger logger = Logger.getLogger(Converter.class);
+
+    void write(File csvFile, File outFile) {
+        CsvParquetWriter csvParquetWriter;
         String line;
         SchemaParser schemaParser = new SchemaParser();
         Path path = new Path(outFile.toURI());
-        System.out.println(Path.isWindowsAbsolutePath(path.toString(), true));
-        MessageType messageType = schemaParser.getSchema(schemaFile);
-        CsvParquetWriter csvParquetWriter = new CsvParquetWriter(path, messageType, false);
+        MessageType messageType = schemaParser.getSchema(csvFile);
+
+        try {
+            csvParquetWriter = new CsvParquetWriter(path, messageType, false);
+        } catch (NullPointerException e) {
+            logger.error("WinUtils directory not found. Set program argument with the path to WinUtils\n" +
+                    "Shutting down application.......");
+            return;
+        } catch (IOException e) {
+            logger.error("File already exists: " + outFile.toString() + "\nShutting down application.......");
+            return;
+        }
 
         try (BufferedReader bf = new BufferedReader(new FileReader(csvFile))) {
             bf.readLine();

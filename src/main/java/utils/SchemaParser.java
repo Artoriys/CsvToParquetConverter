@@ -53,7 +53,7 @@ public class SchemaParser {
     private String parseColumnFormat(String value) {
         try {
             Integer.parseInt(value);
-            return "INT64";
+            return "INT32";
         } catch (NumberFormatException e) {
         }
         try {

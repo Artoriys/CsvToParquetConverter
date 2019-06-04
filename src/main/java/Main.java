@@ -1,14 +1,25 @@
+import org.apache.log4j.Logger;
 import utils.FileMapper;
+import utils.WinUtilsConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 
+/**
+ * @author Nikita Alemaskin
+ * Main class of the CsvToParquetConverter
+ * Usage:
+ * First program argument is name of input (.csv) file in project root directory
+ * Second prorgam argument is name of output (.parquet) file in project root derectory
+ */
 public class Main {
-    public static void main(String[] args) throws IOException {
+    private final static Logger logger = Logger.getLogger(Main.class);
+
+    public static void main(String[] args) {
+        WinUtilsConfiguration.initWinUtils();
         File inputFile = FileMapper.mapFile(args[0]);
-        File schemaFile = FileMapper.mapFile(args[1]);
-        File outFile = FileMapper.mapFile(args[2]);
+        File outFile = FileMapper.mapFile(args[1]);
+        logger.info("Start converter with properties: input file: " + inputFile.getPath() + ";\noutput file: " + outFile.getPath());
         Converter converter = new Converter();
-        converter.write(schemaFile, inputFile, outFile);
+        converter.write(inputFile, outFile);
     }
 }

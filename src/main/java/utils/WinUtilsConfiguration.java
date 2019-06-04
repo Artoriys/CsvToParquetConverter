@@ -5,6 +5,11 @@ import org.apache.log4j.Logger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Class which configure path to WinUtils and add environment hadoop.home.dir to process if machine OS is Windows.
+ * WinUtils located in resource directory.
+ */
+
 public class WinUtilsConfiguration {
     private final static Logger logger = Logger.getLogger(WinUtilsConfiguration.class);
 

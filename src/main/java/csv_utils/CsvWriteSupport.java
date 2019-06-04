@@ -12,6 +12,10 @@ import org.apache.parquet.schema.MessageType;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class which override WriteSupport and add realization to write method
+ */
+
 public class CsvWriteSupport extends WriteSupport<List<String>> {
     private final static Logger logger = Logger.getLogger(CsvWriteSupport.class);
     private final MessageType messageType;

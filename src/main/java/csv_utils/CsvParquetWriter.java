@@ -8,6 +8,9 @@ import org.apache.parquet.schema.MessageType;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Class which extend ParquetWriter
+ */
 
 public class CsvParquetWriter extends ParquetWriter<List<String>> {
 

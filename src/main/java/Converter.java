@@ -10,14 +10,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Main class which provide writing from CSV file to PARQUET file.
+ */
+
 class Converter {
     private final static Logger logger = Logger.getLogger(Converter.class);
 
     void write(File csvFile, File outFile) {
         CsvParquetWriter csvParquetWriter;
         String line;
-        SchemaParser schemaParser = new SchemaParser();
         Path path = new Path(outFile.toURI());
+        SchemaParser schemaParser = new SchemaParser();
         MessageType messageType = schemaParser.getSchema(csvFile);
 
         try {
@@ -37,7 +41,6 @@ class Converter {
                 csvParquetWriter.write(Arrays.asList(line.split(",")));
             }
             csvParquetWriter.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

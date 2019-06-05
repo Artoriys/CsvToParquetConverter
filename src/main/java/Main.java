@@ -16,8 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
         WinUtilsConfiguration.initWinUtils();
-        File inputFile = FileMapper.mapFile(args[0]);
-        File outFile = FileMapper.mapFile(args[1]);
+        File inputFile = FileMapper.mapInputFile(args[0]);
+        File outFile = FileMapper.mapOutputFile(args[1]);
         logger.info("Start converter with properties: input file: " + inputFile.getPath() + ";\noutput file: " + outFile.getPath());
         Converter converter = new Converter();
         converter.write(inputFile, outFile);

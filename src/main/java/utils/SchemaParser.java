@@ -1,8 +1,6 @@
 package utils;
 
 import org.apache.log4j.Logger;
-import org.apache.parquet.schema.MessageType;
-import org.apache.parquet.schema.MessageTypeParser;
 
 import java.io.*;
 
@@ -14,9 +12,8 @@ public class SchemaParser {
 
     private final static Logger logger = Logger.getLogger(SchemaParser.class);
 
-    public MessageType getSchema(File csvFile) {
-        String messageSchema = csvToParquetSchemaParser(csvFile);
-        return MessageTypeParser.parseMessageType(messageSchema);
+    public String getSchema(File csvFile) {
+        return csvToParquetSchemaParser(csvFile);
     }
 
     private String csvToParquetSchemaParser(File csvFile) {
@@ -41,7 +38,7 @@ public class SchemaParser {
         schemaBuilder.append("message csv {").append("\n");
         int i = 1;
         for (String name : names) {
-            schemaBuilder.append("      required ")
+            schemaBuilder.append("required ")
                     .append(parseColumnFormat(values[i - 1]))
                     .append(" ")
                     .append(name)

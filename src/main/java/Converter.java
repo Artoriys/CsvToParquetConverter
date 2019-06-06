@@ -2,6 +2,7 @@ import csv_utils.CsvParquetWriter;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Logger;
 import org.apache.parquet.schema.MessageType;
+import org.apache.parquet.schema.MessageTypeParser;
 import utils.SchemaParser;
 
 import java.io.BufferedReader;
@@ -17,12 +18,24 @@ import java.util.Arrays;
 class Converter {
     private final static Logger logger = Logger.getLogger(Converter.class);
 
-    void write(File csvFile, File outFile) {
+    private File csvFile;
+    private File parqFile;
+
+    Converter(File csvFile, File parqFile) {
+        this.csvFile = csvFile;
+        this.parqFile = parqFile;
+    }
+
+    public void write() {
+        write(csvFile, parqFile);
+    }
+
+    private void write(File csvFile, File outFile) {
         CsvParquetWriter csvParquetWriter;
         String line;
         Path path = new Path(outFile.toURI());
         SchemaParser schemaParser = new SchemaParser();
-        MessageType messageType = schemaParser.getSchema(csvFile);
+        MessageType messageType = MessageTypeParser.parseMessageType(schemaParser.getSchema(csvFile));
 
         try {
             csvParquetWriter = new CsvParquetWriter(path, messageType, false);
